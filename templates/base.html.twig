@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Employees · RealForce!{% endblock %}</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    {% endblock %}
+
+</head>
+<body class="bg-light">
+<div class="container">
+
+    <div class="py-5 text-center">
+        <a href="{{ path('employee_index') }}"><img class="d-block mx-auto mb-4" src="{{ asset('images/logo.png') }}" alt="" width="240" height="69"></a>
+        <h2>Coding Test</h2>
+    </div>
+
+    {% block body %}{% endblock %}
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2020 RealForce</p>
+    </footer>
+</div>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

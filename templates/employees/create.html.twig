@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Employee · RealForce!{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Add Employee</span>
+            </h4>
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="bg-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(form) }}
+            <div class="card col-md-12 pt-3">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.name) }}
+                </div>
+                <div class="form-group col-md-12">
+                    {{ form_row(form.age) }}
+                </div>
+                <div class="form-group col-md-12">
+                    {{ form_row(form.kids_count) }}
+                </div>
+                <div class="form-group col-md-12">
+                    {{ form_row(form.uses_car) }}
+                </div>
+                <div class="form-group col-md-12">
+                    {{ form_row(form.gross) }}
+                </div>
+                <div class="card p-2 mb-3">
+                    {{ form_widget(form.create) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
