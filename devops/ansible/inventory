@@ -1,0 +1,113 @@
+# Web servers
+[loc-web-server]
+192.168.10.10
+
+[dev-web-server]
+dm-dev-web-server
+
+[prod-web-server]
+dm-prod-web-server
+
+# Bot servers
+[loc-nodejs-app]
+192.168.10.11
+
+[dev-nodejs-app]
+dm-dev-bot1
+dm-dev-bot2
+
+[prod-nodejs-app]
+dm-prod-bot1
+
+# Database servers
+[loc-db]
+192.168.10.20
+
+# Database servers
+[dev-db]
+dm-dev-db
+
+[prod-db]
+dm-prod-db
+
+# Redis servers
+[loc-redis]
+192.168.10.21
+
+[dev-redis]
+dm-dev-redis
+
+[prod-redis]
+dm-prod-redis
+
+# Group 'local' with all servers
+[loc-stack:children]
+loc-web-server
+loc-db
+loc-redis
+loc-nodejs-app
+
+# Group 'dev' with all servers
+[dev-stack:children]
+dev-web-server
+dev-db
+dev-redis
+dev-nodejs-app
+
+[prod-stack:children]
+prod-web-server
+prod-db
+prod-redis
+prod-nodejs-app
+
+
+[all:vars]
+prefix=dm
+domain_code=realforce.gravex
+app_directory=/var/www/dm-site/
+cronjob_log_path=/var/log/dm-crons/
+cron_post_deploy_log_filename=dm_console_post_deploy
+
+
+# Loc stack vars
+[loc-stack:vars]
+host_key_checking=false
+ansible_ssh_user=vagrant
+ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key
+app_user_password=$6$uXGMbUi.e5QVGH3p$xfiDkUb5RaTIGgV.K9ZELvbitkIhovpWpcR2SeyR/rJr3ybTNMts.TyoaSz.IXJuaff1DPbdZHIM48MLymLau.
+web_server_basic_auth_state="off"
+domain_frontend=realforce.gravex.loc
+domain_static=static.gravex.loc
+domain_backend=admin.gravex.loc
+ssl_cert=/var/www/dm-site/cert/loc/fullchain.pem
+ssl_cert_key=/var/www/dm-site/cert/loc/privkey.pem
+redis_bind_interface=0.0.0.0
+composer_user=vagrant
+composer_home_owner=vagrant
+composer_home_group=vagrant
+
+[dev-stack:vars]
+app_user_password=$6$uXGMbUi.e5QVGH3p$xfiDkUb5RaTIGgV.K9ZELvbitkIhovpWpcR2SeyR/rJr3ybTNMts.TyoaSz.IXJuaff1DPbdZHIM48MLymLau.
+web_server_basic_auth_state = "active"
+domain_frontend=dev.gravex.ru
+domain_static=dev.static.gravex.ru
+domain_backend=dev.admin.gravex.ru
+ssl_cert=/etc/letsencrypt/live/dev.gravex.ru/fullchain.pem
+ssl_cert_key=/etc/letsencrypt/live/dev.gravex.ru/privkey.pem
+redis_bind_interface=10.135.23.10 127.0.0.1
+composer_user=dm-user
+composer_home_owner=dm-user
+composer_home_group=dm-user
+
+[prod-stack:vars]
+web_server_basic_auth_state = "off"
+app_user_password=$6$S4bq4FhCEfpsnMWY$1HU0up1KkNzD7aTOJOYpM1zOvTmmBlQtQUtNkTB/YssT4rkZgQWOAOkDeekv..J9veD5pilnZzxQ613CVTGRt0
+domain_frontend=realforce.gravex.ru
+domain_static=static.gravex.ru
+domain_backend=admin.gravex.ru
+ssl_cert=/etc/letsencrypt/live/gravex.ru/fullchain.pem
+ssl_cert_key=/etc/letsencrypt/live/gravex.ru/privkey.pem
+redis_bind_interface=10.135.66.231 127.0.0.1
+composer_user=dm-user
+composer_home_owner=dm-user
+composer_home_group=dm-user

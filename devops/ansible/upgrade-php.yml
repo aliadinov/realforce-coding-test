@@ -1,0 +1,8 @@
+# upgrade php
+- hosts: "{{ stack }}-web-server"
+  vars:
+    php_version: '7.3'
+    php_versions_install_recommends: false
+    roles:
+    - role: geerlingguy.php-versions
+    - role: geerlingguy.php

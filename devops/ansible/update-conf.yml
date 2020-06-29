@@ -1,0 +1,30 @@
+# update conf for web-server
+- hosts: "{{ stack }}-web-server"
+  become: yes
+  vars_files:
+    - vars/main.yml
+    - vars/setup-web-server.yml
+  tasks:
+    - name: Check nginx include folder
+      file:
+        path: /etc/nginx/includes/
+        state: directory
+
+    - name: Prepare nginx includes
+      template: src=nginx/includes/{{ item }} dest=/etc/nginx/includes/{{ prefix }}-{{ item }}
+      with_items:
+        - web-server-backend.conf
+        - web-server-frontend.conf
+        - web-server-base.conf
+        - web-server-base-php.conf
+        - web-server-static.conf
+        - web-server-listen.conf
+      notify: reload nginx
+
+    - name: Configure nginx
+      template: src=nginx/{{ domain_code }}.conf dest=/etc/nginx/conf.d/{{ domain_code }}.conf
+      notify: reload nginx
+
+  handlers:
+    - name: reload nginx
+      service: name=nginx state=reloaded

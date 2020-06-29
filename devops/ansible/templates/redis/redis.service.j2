@@ -1,0 +1,14 @@
+[Unit]
+Description=Redis In-Memory Data Store
+After=network.target
+
+[Service]
+User=redis
+Group=redis
+ExecStart=/usr/local/bin/redis-server {{ redis_conf_path }}{{ redis_conf_filename }}
+ExecStop=/usr/local/bin/redis-cli shutdown
+Restart=always
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

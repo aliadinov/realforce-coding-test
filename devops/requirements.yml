@@ -1,0 +1,8 @@
+---
+- src: geerlingguy.mysql
+- src: geerlingguy.php-versions
+- src: geerlingguy.php
+- src: nginxinc.nginx
+- src: geerlingguy.htpasswd
+- src: geerlingguy.composer
+- src: geerlingguy.git

@@ -1,0 +1,7 @@
+app_user: "{{ prefix }}-user"
+
+app_directory: "/var/www/{{ prefix }}-site/"
+
+web_server_basic_auth_user: ba-user
+web_server_basic_auth_password: ba-pass
+web_server_basic_auth_path: "/etc/nginx/passwdfile"

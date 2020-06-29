@@ -1,51 +1,23 @@
-composer require annotations
+#### Live:
+- http://realforce.gravex.ru/
 
-composer require sec-checker
+#### How to build:
 
-composer require template
-
-composer require profile --dev
-
-composer require debug
-
-composer require symfony/asset
-
-php bin/console debug:router
+- git clone https://github.com/aliadinov/realforce-coding-test.git
+- composer install
+- create DATABASE called realforce (user='root', password='')
+- php bin/console doctrine:migrations:migrate
 
 
----
+#### How to test:
+- ./bin/phpunit
 
-composer require symfony/orm-pack
-
-composer require annotations
-
-composer require validator
-
-composer require template
-
-composer require security-bundle
-
-composer require --dev maker-bundle
+#### How to run locally:
+- php -S 127.0.0.1:8000 -t public/
+- symfony serve (if you have symfony CLI installed)
 
 
----
-
-php bin/console make:entity
-
-
-php bin/console make:migration
-
-
-
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
-
-
-
-composer require --dev doctrine/doctrine-fixtures-bundle
-
-php bin/console doctrine:fixtures:load
-
-composer require symfony/form
- 
-composer require --dev symfony/phpunit-bridge
+#### How to setup VM and deploy (using ansible):
+- see devops folder with devops/README.md instructions inside (not very accurate, sorry for that, just copy-paste from another project with minor changes)
+- after that do steps from 'how to build' section 
+- see http://realforce.gravex.ru/ It was setup with current ansible script

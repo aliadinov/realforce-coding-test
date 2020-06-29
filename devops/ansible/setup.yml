@@ -1,0 +1,92 @@
+# setup DB host
+- hosts: "{{ stack }}-db"
+  become: yes
+  vars_files:
+    - vars/main.yml
+    - vars/setup-mysql.yml
+  pre_tasks:
+    - name: Add MySQL repository key
+      apt_key: url=http://repo.mysql.com/RPM-GPG-KEY-mysql state=present
+    - name: Add MySQL Server repository
+      apt_repository: repo='deb http://repo.mysql.com/apt/debian/ stretch mysql-8.0' state=present
+  roles:
+    - role: geerlingguy.mysql
+  tasks:
+    - name: Install htop package
+      apt:
+        name: htop
+        state: present
+#- ALTER USER 'bot-user'@'%' IDENTIFIED WITH mysql_native_password BY 'pass';
+#- ALTER USER 'site-user'@'%' IDENTIFIED WITH mysql_native_password BY 'pass';
+
+# setup web-server
+- hosts: "{{ stack }}-web-server"
+  become: yes
+  vars_files:
+    - vars/main.yml
+    - vars/setup-web-server.yml
+  vars:
+    htpasswd_credentials:
+      - path: "{{ web_server_basic_auth_path }}"
+        name: "{{ web_server_basic_auth_user }}"
+        password: "{{ web_server_basic_auth_password }}"
+        owner: root
+        group: www-data
+        mode: 'u+rw,g+r'
+  pre_tasks:
+    - name: Create a login user
+      user:
+        name: "{{ app_user }}"
+        password: "{{ app_user_password }}"
+        state: present
+        shell: /bin/bash
+    - name: Creates directory for composer
+      file:
+        path: "/home/{{ composer_user }}/.composer"
+        state: directory
+        mode: 0700
+        owner: "{{ composer_user }}"
+        group: "{{ composer_user }}"
+  roles:
+    - role: nginxinc.nginx
+    - role: geerlingguy.php-versions
+    - role: geerlingguy.php
+    - role: geerlingguy.htpasswd
+    - role: geerlingguy.git
+    - role: geerlingguy.composer
+  tasks:
+    - name: Checking php7.3-mysql
+      apt:
+        name: php7.3-mysql
+        state: present
+    - name: Checking php7.3-zip
+      apt:
+        name: php7.3-zip
+        state: present
+    - name: Checking php7.3-bcmath
+      apt:
+        name: php7.3-bcmath
+        state: present
+    - name: Install Certbot's Nginx package
+      apt:
+        name: python-certbot-nginx
+        state: present
+    - name: Creates directory for app
+      file:
+        path: "{{ app_directory }}"
+        state: directory
+        mode: 0700
+        owner: "{{ php_fpm_pool_user }}"
+        group: "{{ php_fpm_pool_user }}"
+    - name: Checking rsync
+      apt:
+        name: rsync
+        state: present
+    - name: Install htop package
+      apt:
+        name: htop
+        state: present
+    - name: Install imagemagick package
+      apt:
+        name: imagemagick
+        state: present
