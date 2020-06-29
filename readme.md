@@ -21,3 +21,12 @@
 - see devops folder with devops/README.md instructions inside (not very accurate, sorry for that, just copy-paste from another project with minor changes)
 - after that do steps from 'how to build' section 
 - see http://realforce.gravex.ru/ It was setup with current ansible script
+
+#### expandable system of bonuses or deductions:
+    $rules = [
+        function() { $this->tax  += 0.2; },
+        function() { $this->coef += $this->age > 50       ?  0.07 : 0; },
+        function() { $this->tax  += $this->kids_count > 2 ? -0.02 : 0; },
+        function() { $this->fee  += $this->uses_car       ?  500  : 0; },
+        // etc...
+    ];
